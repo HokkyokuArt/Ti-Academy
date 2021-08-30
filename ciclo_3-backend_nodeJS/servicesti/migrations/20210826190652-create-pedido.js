@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      idCliente: {
+      ClienteId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         reference:{
@@ -18,7 +18,7 @@ module.exports = {
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
-      idServicos: {
+      ServicoId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         reference:{
