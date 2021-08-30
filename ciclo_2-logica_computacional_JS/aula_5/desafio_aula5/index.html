@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+	<title>Desafio Aula 5</title>
+	<link rel="stylesheet" href="site2.css">
+	<script type="text/javascript" src="script.js"></script>
+</head>
+<body>
+	<header class="flex">
+		<h1>ME ACHA!!!</h1>
+		<h2>ENCONTRE UM ENDEREÇO PELO NÚMERO DE CEP</h2>		
+		<div id="content-base" class="flex justify-content">
+			<div id="logo-principal" class="flex justify-content">
+				<span class="material-icons logo">
+					travel_explore
+				</span>
+			</div>
+		</div>
+	</header>
+	<main>
+		<div id="conteudo-geral" class="flex justify-content">			
+			<div class="box-custom flex justify-content">
+				<form action="">
+					<label class="flex">CEP
+						<input type="text" name="cep" class="cxCep" placeholder="Digite aqui o seu CEP:">
+					</label>
+					<label class="flex">RUA
+						<input type="text" id="logradouro" name="rua" placeholder="Digite aqui a sua rua:" readonly="">
+					</label>
+					<label class="flex">BAIRRO
+						<input type="text" id="bairro" name="bairro" placeholder="Digite o seu bairro:" readonly="">
+					</label>
+					<label class="flex">CIDADE
+						<input type="text" id="localidade" name="cidade" placeholder="Digite a sua cidade:" readonly="">
+					</label>
+					<label class="flex">UF
+						<input type="text" id="uf" name="uf" placeholder="Digite o seu Estado:" readonly=""> <!-- readonly nao editavel -->
+					</label>
+					<div class="display-btn flex justify-content">
+						<input class="btn" id="btnBuscaCep" type="button" value="BUSCAR" name="buscar">
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
+	<footer></footer>	
+</body>
+</html>
+
+

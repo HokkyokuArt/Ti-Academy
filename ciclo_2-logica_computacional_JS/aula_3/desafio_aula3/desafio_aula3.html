@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="script.js"></script>
+
+    <title>Desafio Aula 3</title>
+</head>
+<style>
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    
+       
+    }
+    main{
+        display: flex;
+        justify-content: center;
+        
+
+    }
+    form{
+        
+        margin-top: 10px;
+        width: 400px;
+        padding: 10px;
+        border: 1px solid rgb(228, 228, 228);
+        display: flex;
+        flex-direction: column;
+       
+    }
+
+    label{
+        display: flex;
+        justify-content: space-between;
+        margin-right: 30px;
+    }
+    input:focus{
+        outline: none;
+    }
+
+    .adj{
+        padding: 5px;
+        border-radius: 5px;  
+    }
+
+    .btn{
+        padding: 10px;
+        height: auto;
+        width: 200px;
+        margin-top: 10px;
+        border-radius: 5px;
+        background-color: green;
+        color: white;
+        border: 0px;
+        
+    }
+    .btn:hover{
+        cursor:pointer;
+    }
+
+</style>
+<body>
+    <main>
+        <form>
+
+            <label>Digite o valor 1:
+                <input type="text" id="v1" class="adj">
+            </label>
+            <label>Digite o valor 2:
+                <input type="text" id="v2" class="adj">
+            </label>
+            <label>Informe o Resultado:
+                <input type="text" id="r" class="adj">
+            </label>
+
+            <input type="button" id="btnS" class="btn" value="CONFIRMAR RESULTADO">
+
+
+
+
+
+
+        </form>
+
+
+
+
+
+
+    </main>
+
+
+
+
+</body>
+</html>
