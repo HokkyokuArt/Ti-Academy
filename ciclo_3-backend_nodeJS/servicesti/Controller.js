@@ -294,7 +294,29 @@ app.delete('/apagarcliente/:nome', (req,res)=>{
 
 
 
+// DESAFIOS
 
+//  AULA 1
+/* Que outras informações (objetos) para controle
+você incluiria no projeto da Services TIAcademy? */
+/* 
+feedback - uma área para feedback/sugestões
+promoções - serviços ou produtos em promoções mostrados separadamente 
+e com o preço ja ajustado
+entregas - área reservada para vizualizar informaçoes sobre entrega 
+*/
+
+//  AULA 2
+
+//  AULA 3
+
+
+
+//  AULA 4
+
+
+
+//  AULA 5
 
 
 
