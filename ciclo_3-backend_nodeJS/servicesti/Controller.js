@@ -3,6 +3,7 @@ const cors=require('cors');
 
 const models=require('./models');
 
+
 const app=express();
 app.use(cors());
 app.use(express.json());
@@ -15,7 +16,6 @@ let pedido=models.Pedido;
 app.get('/', function(req,res){
     res.send('Olá Mundo!');
 });
-
 app.post('/clientes', async(req,res)=>{
     let crate=await cliente.create(
         req.body
@@ -292,13 +292,14 @@ app.delete('/apagarcliente/:nome', (req,res)=>{
 
 
 
-
+/////////////////////////////////////////////////////////////////////////
 
 // DESAFIOS
 
 //  AULA 1
 /* Que outras informações (objetos) para controle
 você incluiria no projeto da Services TIAcademy? */
+
 /* 
 feedback - uma área para feedback/sugestões
 promoções - serviços ou produtos em promoções mostrados separadamente 
@@ -306,14 +307,53 @@ e com o preço ja ajustado
 entregas - área reservada para vizualizar informaçoes sobre entrega 
 */
 
+
+
 //  AULA 2
+/* Insira 5 novos clientes.
+Insira 10 novos pedidos. */
+
+
+
 
 //  AULA 3
-
+/* Qual é o total que o cliente
+X gastou na ServicesTI? */
 
 
 //  AULA 4
+/* Faça uma rota que liste todos
+os pedidos de um cliente.
+Crie uma nova rota que
+permita alterar esse pedido
+utilizando o clienteId. */
 
+
+app.get('/pedidoscliente/:id', async(req,res)=>{
+    await pedido.findAll({where: {ClienteId: [req.params.id]}})
+    .then(function(pedidos){
+     
+     res.json(pedidos)
+    })
+        
+});
+
+
+app.put('/alterarpedido/:ClienteId', (req,res)=>{
+    pedido.update(req.body,{
+        where: {ClienteId: req.body.ClienteId}
+    }).then(function(){
+        return res.json(
+            "Pedido alterado com sucesso."
+        )
+    }).catch(function(erro){
+        return res.status(400).json({
+            error: true,
+            message: "Não foi possível modificar o pedido."
+        });
+    });
+
+})
 
 
 //  AULA 5
@@ -356,7 +396,7 @@ entregas - área reservada para vizualizar informaçoes sobre entrega
 
 
 // port
-let port=process.env.PORT || 3000;
+let port=process.env.PORT || 8080;
 
 app.listen(port,(req,res)=>{
     console.log('Servidor ativo');
