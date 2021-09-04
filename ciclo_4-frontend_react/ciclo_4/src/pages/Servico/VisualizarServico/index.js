@@ -1,9 +1,42 @@
-import { Container, Table } from 'reactstrap';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Alert, Container, Table } from 'reactstrap';
+import { api } from '../../../config';
 
 export const VisualizarServico = () => {
+
+    const [data, setData] = useState([]);
+    const [status, setStatus] = useState({
+        type: '',
+        message: ''
+    });
+
+    const getServicos = async () => {
+        await axios.get(api + "/listaservicos")
+            .then((response) => {
+                console.log(response.data.servicos);
+                setData(response.data.servicos);
+
+            }).catch(() => {
+                setStatus({
+                    type: 'error',
+                    message: 'Erro: Não foi possível conectar a Api.'
+                });
+
+            });
+
+    }
+
+    useEffect(() => {
+        getServicos();
+    }, []);
+
     return (
         <div className="p-3">
             <Container>
+                {status.type === 'error' ? <Alert color="danger">{status.message}</Alert> :""}
+                
                 <div>
                     <h2>Serviços</h2>
                 </div>
@@ -18,25 +51,18 @@ export const VisualizarServico = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Serviço1</td>
-                            <td>Descrição1</td>
-                            <td>aaaaaaa</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Serviço2</td>
-                            <td>Descrição2</td>
-                            <td>aaaaaaa</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Serviço3</td>
-                            <td>Descrição3</td>
-                            <td>aaaaaaa</td>
-                        </tr>
-                                             
+                        {data.map(item => (
+                            <tr key={item.id}>
+                                <td>{item.id}</td>
+                                <td>{item.nome}</td>
+                                <td>{item.descricao}</td>
+                                <td className="text-center">
+                                    <Link to={"/servico/"+item.id}
+                                    className="btn btn-outline-primary btn-sm">Consultar</Link>
+                                </td>
+                            </tr>
+                        ))}
+
                     </tbody>
                 </Table>
             </Container>

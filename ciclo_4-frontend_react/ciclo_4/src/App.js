@@ -6,6 +6,7 @@ import {Menu} from './components/Menu';
 import {VisualizarCliente} from './pages/Cliente/VisualizarCliente'
 import {VisualizarServico} from './pages/Servico/VisualizarServico'
 import {VisualizarPedido} from './pages/Pedido/VisualizarPedido'
+import { Servico } from './pages/Servico/Servico';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route path="/visualizarcliente" component={VisualizarCliente}/>
           <Route path="/visualizarservico" component={VisualizarServico}/>
           <Route path="/visualizarpedido" component={VisualizarPedido}/>  
+          <Route path="/servico/:id" component={Servico}/>
         </Switch>
       </Router>
     </div>
