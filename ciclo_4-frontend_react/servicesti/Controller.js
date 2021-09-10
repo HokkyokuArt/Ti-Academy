@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 
 const models = require('./models');
+/* const { setTimeout } = require('timers'); */
+
 
 
 const app = express();
@@ -27,10 +29,27 @@ app.post('/clientes', async (req, res) => {
 
 //adicionar um novo serviço
 app.post('/servicos', async (req, res) => {
-    let create = await servico.create(
+    await aguardar(3000);
+
+    function aguardar(ms){
+        return new Promise((resolve)=>{
+            setTimeout(resolve, ms);
+        });
+    }
+
+    await servico.create(
         req.body
-    );
-    res.send('Serviço foi inserido!');
+    ).then(() => {
+        return res.json({
+            type: "success",
+            message: "Serviço foi criado com sucesso."
+        });
+    }).catch((erro) => {
+        return res.status(400).json({
+            type: "error",
+            message: "Erro na criação de serviço."
+        });
+    });
 });
 
 //adicionar um novo pedido
@@ -71,11 +90,43 @@ app.get('/servico/:id', async (req, res) => {
         }).catch(function (erro) {
             return res.status(400).json({
                 error: true,
-                messagem: "Código não está cadastrado!"
+                messagem: "Serviço não está cadastrado!"
             });
         });
 
 });
+
+app.get('/cliente/:id', async (req, res) => {
+   cliente.findByPk(req.params.id)
+        .then(cliente => {
+            return res.json({
+                error: false,
+                cliente
+            });
+        }).catch(function (erro) {
+            return res.status(400).json({
+                error: true,
+                messagem: "Cliente não está cadastrado!"
+            });
+        });
+
+});
+
+app.get('/pedido/:id', async (req, res) => {
+    pedido.findByPk(req.params.id)
+         .then(pedido => {
+             return res.json({
+                 error: false,
+                 pedido
+             });
+         }).catch(function (erro) {
+             return res.status(400).json({
+                 error: true,
+                 messagem: "Pedido não está cadastrado!"
+             });
+         });
+ 
+ });
 
 // get = importar da base de da dados / linha de aplicação
 // post = inserção via formulário
@@ -309,6 +360,21 @@ app.delete('/apagarcliente/:nome', (req, res) => {
     });
 });
 
+app.delete('/apagarservico/:id', (req, res) => {
+    servico.destroy({
+        where: { id: req.params.id}
+    }).then(function () {
+        return res.json({
+            error: false,
+            message: "Serviço foi excluído com sucesso."
+        });
+    }).catch(function (erro) {
+        return res.status(400).json({
+            error: true,
+            message: "Não foi possível excluir o Serviço."
+        });
+    });
+});
 
 
 /////////////////////////////////////////////////////////////////////////

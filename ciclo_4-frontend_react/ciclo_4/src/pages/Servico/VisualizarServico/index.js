@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, Container, Table } from 'reactstrap';
-import { api } from '../../../config';
+import { api, headers } from '../../../config';
 
 export const VisualizarServico = () => {
 
@@ -28,6 +28,31 @@ export const VisualizarServico = () => {
 
     }
 
+    const apagarServico = async(idServico) =>{
+        console.log("excluir serviço id "+idServico);
+        await axios.delete(api+"/apagarservico/"+idServico,{headers})
+        .then((response)=>{
+            getServicos();
+            if (response.data.error) {
+                setStatus({
+                    type: 'error',
+                    message: response.data.message
+                });
+            } else {
+                setStatus({
+                    type: 'success',
+                    message: response.data.message
+                });
+            }
+
+        }).catch(()=>{
+            setStatus({
+                type: 'error',
+                message: "Erro: Não foi possível conectar a Api."
+            });
+        });
+    }
+
     useEffect(() => {
         getServicos();
     }, []);
@@ -35,11 +60,19 @@ export const VisualizarServico = () => {
     return (
         <div className="p-3">
             <Container>
-                {status.type === 'error' ? <Alert color="danger">{status.message}</Alert> :""}
+                {status.type === 'error' ? <Alert color="danger">{status.message}</Alert> : ""}
                 
-                <div>
-                    <h2>Serviços</h2>
+                <div className="d-flex">
+                    <div className="mr-auto">
+                        <h2>Lista de Serviços</h2>
+                    </div>
+                    <div>
+                        <Link to="/cadastrarservico"
+                            className="btn btn-outline-primary btn-sm m-1">Cadastrar
+                        </Link>
+                    </div>
                 </div>
+
                 <Table striped hover>
                     <thead>
                         <tr>
@@ -57,8 +90,12 @@ export const VisualizarServico = () => {
                                 <td>{item.nome}</td>
                                 <td>{item.descricao}</td>
                                 <td className="text-center">
-                                    <Link to={"/servico/"+item.id}
-                                    className="btn btn-outline-primary btn-sm">Consultar</Link>
+                                    <Link to={"/servico/" + item.id}
+                                        className="btn btn-outline-primary btn-sm m-1">Consultar</Link>
+                                    <Link to={"/editarservico/" + item.id}
+                                        className="btn btn-outline-warning btn-sm m-1">Editar</Link>
+                                    <span className="btn btn-outline-danger btn-sm m-1"
+                                        onClick={()=> apagarServico(item.id)}>Excluir</span>
                                 </td>
                             </tr>
                         ))}

@@ -2,23 +2,23 @@ import{Container} from 'reactstrap';
 
 export const Home = ()=>{
     return(
-        <div>
+        <div className="p-3">
             <Container>
                 <div className="d-flex">
-                    <div className="mr-auto p-2">
-                        <h1>Página inicial</h1>
+                    <div className="mr-auto">
+                        <h2>Página inicial</h2>
                     </div>
-                    <div className="p-2">
+                    <div>
                         <a href="/visualizarcliente" 
-                        className="btn btn-outline-primary btn-sm">Clientes</a>
+                        className="btn btn-outline-primary btn-sm m-1">Clientes</a>
                     </div>
-                    <div className="p-2">
+                    <div>
                         <a href="/visualizarservico" 
-                        className="btn btn-outline-primary btn-sm">Serviços</a>
+                        className="btn btn-outline-primary btn-sm m-1">Serviços</a>
                     </div>
-                    <div className="p-2">
+                    <div>
                         <a href="/visualizarpedido" 
-                        className="btn btn-outline-primary btn-sm">Pedidos</a>
+                        className="btn btn-outline-primary btn-sm m-1">Pedidos</a>
                     </div>
                 </div>
                 

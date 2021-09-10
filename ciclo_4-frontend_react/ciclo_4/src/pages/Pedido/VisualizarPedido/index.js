@@ -1,49 +1,88 @@
-import { Container, Table} from 'reactstrap';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Alert, Container, Table } from 'reactstrap';
+import { api } from '../../../config';
 
 export const VisualizarPedido = () => {
+
+
+    const [data, setData] = useState([]);
+    const [status, setStatus] = useState({
+        type: '',
+        message: ''
+    });
+
+    const getPedidos = async () => {
+        await axios.get(api + "/listapedidos")
+            .then((response) => {
+                console.log(response.data.pedidos);
+                setData(response.data.pedidos);
+
+            }).catch(() => {
+                setStatus({
+                    type: 'error',
+                    message: 'Erro: Não foi possível conectar a Api.'
+                });
+
+            });
+
+    }
+
+    useEffect(() => {
+        getPedidos();
+    }, []);
+
+
+
+
+
+
+
+
     return (
-        <div className="p-3" >
+        <div className="p-3">
             <Container>
-                <div>
-                    <h2>Pedidos</h2>
+                {status.type === 'error' ? <Alert color="danger">{status.message}</Alert> : ""}
+
+                <div className="d-flex">
+                    <div className="mr-auto">
+                        <h2>Lista de Pedidos</h2>
+                    </div>
+                    <div className="p-2">
+                        <Link to="/cadastrarpedido"
+                            className="btn btn-outline-primary btn-sm">Cadastrar
+                        </Link>
+                    </div>
                 </div>
+
                 <Table striped hover>
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Pedido</th>
                             <th>ID Cliente</th>
                             <th>ID Serviço</th>
                             <th>Valor</th>
                             <th>Prazo</th>
 
+
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>1</td>
-                            <td>23</td>
-                            <td>8</td>
-                            <td>999,99</td>
-                            <td>30/03/2022</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td>999,99</td>
-                            <td>30/03/2022</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                            <td>999,99</td>
-                            <td>30/03/2022</td>
-                        </tr>                        
+                        {data.map(item => (
+                            <tr key={item.id}>
+                                <td>{item.id}</td>
+                                <td>{item.ClienteId}</td>
+                                <td>{item.ServicoId}</td>
+                                <td>{item.valor}</td>
+                                <td>{item.data}</td>
+                                <td className="text-center">
+                                    <Link to={"/pedido/" + item.id}
+                                        className="btn btn-outline-primary btn-sm">Consultar</Link>
+                                </td>
+                            </tr>
+                        ))}
+
                     </tbody>
                 </Table>
             </Container>
