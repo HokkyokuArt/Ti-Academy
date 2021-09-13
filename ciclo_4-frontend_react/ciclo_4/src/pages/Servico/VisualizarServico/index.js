@@ -28,29 +28,29 @@ export const VisualizarServico = () => {
 
     }
 
-    const apagarServico = async(idServico) =>{
-        console.log("excluir serviço id "+idServico);
-        await axios.delete(api+"/apagarservico/"+idServico,{headers})
-        .then((response)=>{
-            getServicos();
-            if (response.data.error) {
+    const apagarServico = async (idServico) => {
+        console.log("excluir serviço id " + idServico);
+        await axios.delete(api + "/apagarservico/" + idServico, { headers })
+            .then((response) => {
+                getServicos();
+                if (response.data.error) {
+                    setStatus({
+                        type: 'error',
+                        message: response.data.message
+                    });
+                } else {
+                    setStatus({
+                        type: 'success',
+                        message: response.data.message
+                    });
+                }
+
+            }).catch(() => {
                 setStatus({
                     type: 'error',
-                    message: response.data.message
+                    message: "Erro: Não foi possível conectar a Api."
                 });
-            } else {
-                setStatus({
-                    type: 'success',
-                    message: response.data.message
-                });
-            }
-
-        }).catch(()=>{
-            setStatus({
-                type: 'error',
-                message: "Erro: Não foi possível conectar a Api."
             });
-        });
     }
 
     useEffect(() => {
@@ -61,15 +61,10 @@ export const VisualizarServico = () => {
         <div className="p-3">
             <Container>
                 {status.type === 'error' ? <Alert color="danger">{status.message}</Alert> : ""}
-                
+
                 <div className="d-flex">
                     <div className="mr-auto">
                         <h2>Lista de Serviços</h2>
-                    </div>
-                    <div>
-                        <Link to="/cadastrarservico"
-                            className="btn btn-outline-primary btn-sm m-1">Cadastrar
-                        </Link>
                     </div>
                 </div>
 
@@ -91,17 +86,25 @@ export const VisualizarServico = () => {
                                 <td>{item.descricao}</td>
                                 <td className="text-center">
                                     <Link to={"/servico/" + item.id}
-                                        className="btn btn-outline-primary btn-sm m-1">Consultar</Link>
+                                        className="btn btn-outline-info btn-sm m-1">Consultar</Link>
                                     <Link to={"/editarservico/" + item.id}
                                         className="btn btn-outline-warning btn-sm m-1">Editar</Link>
                                     <span className="btn btn-outline-danger btn-sm m-1"
-                                        onClick={()=> apagarServico(item.id)}>Excluir</span>
+                                        onClick={() => apagarServico(item.id)}>Excluir</span>
                                 </td>
                             </tr>
                         ))}
 
                     </tbody>
                 </Table>
+                <div className="pt-2">
+                    <Link to="/cadastrarservico"
+                        className="btn btn-outline-success btn-sm m-1">Adicionar Serviço
+                    </Link>
+                    <Link to="/"
+                        className="btn btn-outline-primary btn-sm m-1">Voltar
+                    </Link>
+                </div>
             </Container>
         </div>
     )

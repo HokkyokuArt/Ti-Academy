@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { Alert, Button, Container, Form, FormGroup, Input, Label } from "reactstrap"
-import { api } from "../../../config";
+import { Alert, Button, Container, Form, FormGroup, Input, Label, Spinner } from "reactstrap"
+import { api, headers } from "../../../config";
 
 export const CadastrarCliente = () => {
 
@@ -12,11 +12,12 @@ export const CadastrarCliente = () => {
         endereco: '',
         cidade: '',
         uf: '',
-        nascimento:''
+        nascimento: ''
 
     });
 
     const [status, setStatus] = useState({
+        formSave: false,
         type: '',
         message: ''
 
@@ -27,21 +28,24 @@ export const CadastrarCliente = () => {
     });
 
     const cadCliente = async e => {
-        console.log(cliente)
         e.preventDefault();
-        const headers = {
-            'Content-Type': 'application/json'
-        }
+
+        setStatus({
+            formSave: true
+        });
+
 
         await axios.post(api + "/clientes", cliente, { headers })
             .then((response) => {
                 if (response.data.error) {
                     setStatus({
+                        formSave: false,
                         type: 'error',
                         message: response.data.message
                     });
                 } else {
                     setStatus({
+                        formSave: false,
                         type: 'success',
                         message: response.data.message
                     });
@@ -49,6 +53,7 @@ export const CadastrarCliente = () => {
 
             }).catch(() => {
                 setStatus({
+                    formSave: false,
                     type: 'error',
                     message: "Erro: Não foi possível conectar a Api."
                 });
@@ -62,31 +67,17 @@ export const CadastrarCliente = () => {
                     <div className="mr-auto">
                         <h2>Cadastrar Novo Cliente</h2>
                     </div>
-                    <div className="p-2">
-                        <Link to="/visualizarcliente"
-                            className="btn btn-outline-primary btn-sm">Voltar
-                        </Link>
-                    </div>
                 </div>
-                <hr className="m-1" />
+                <hr />
 
                 {status.type === 'error' ? <Alert color="danger">
-                    {status.message}</Alert>:""}
-                    
+                    {status.message}</Alert> : ""}
+
                 {status.type === 'success' ? <Alert color="success">
-                    {status.message}</Alert>:""}
-        
-                <Form className="p-2" onSubmit={cadCliente}>
-                    
-                    <FormGroup className="p-2">
-                        <Label>Id</Label>
-                        <Input type="text" name="id"
-                            placeholder="Id" onChange={valorInput} />
-                    </FormGroup>
-                    
-                    
-                    
-                    
+                    {status.message}</Alert> : ""}
+
+                <Form onSubmit={cadCliente}>
+
                     <FormGroup className="p-2">
                         <Label>Nome</Label>
                         <Input type="text" name="nome"
@@ -112,8 +103,18 @@ export const CadastrarCliente = () => {
                         <Input type="text" name="nascimento"
                             placeholder="Data de Nascimento do Cliente" onChange={valorInput} />
                     </FormGroup>
-                    
-                    <Button className="m-2" type="submit" outline color="info">Cadastrar</Button>
+
+                    <div className="p-1 pt-3">
+                        {status.formSave ?
+                            <Button className="m-1" type="submit" size="sm" outline color="success" disabled>Salvando
+                                <Spinner children="" color="success" size="sm" /></Button> :
+                            <Button className="m-1" type="submit" size="sm" outline color="success">Cadastrar</Button>
+                        }
+                        <Button type="reset" className="m-1" size="sm" outline color="danger">Limpar</Button>
+                        <Link to="/listadeclientes"
+                            className="btn btn-outline-primary btn-sm m-1">Voltar
+                        </Link>
+                    </div>
 
                 </Form>
 

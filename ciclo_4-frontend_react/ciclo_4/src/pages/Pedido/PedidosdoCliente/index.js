@@ -4,20 +4,22 @@ import { Link } from 'react-router-dom';
 import { Alert, Container, Table } from 'reactstrap';
 import { api, headers } from '../../../config';
 
-export const VisualizarCliente = () => {
+export const PedidosdoCliente = (props) => {
 
 
     const [data, setData] = useState([]);
+    const [id] = useState(props.match.params.id)
+    const [ClienteId] = useState(props.match.params.id)
     const [status, setStatus] = useState({
         type: '',
         message: ''
     });
 
-    const getClientes = async () => {
-        await axios.get(api + "/listaclientes")
+    const getPedidos = async () => {
+        await axios.get(api + "/pedidosdocliente/" + id)
             .then((response) => {
-                console.log(response.data.clientes);
-                setData(response.data.clientes);
+                console.log(response.data.pedidos);
+                setData(response.data.pedidos);
 
             }).catch(() => {
                 setStatus({
@@ -29,11 +31,11 @@ export const VisualizarCliente = () => {
 
     }
 
-    const apagarCliente = async (idCliente) => {
-        console.log("excluir cliente id " + idCliente);
-        await axios.delete(api + "/apagarcliente/" + idCliente, { headers })
+    const apagarPedido = async (idPedido) => {
+        console.log("excluir cliente id " + idPedido);
+        await axios.delete(api + "/apagarpedido/" + idPedido, { headers })
             .then((response) => {
-                getClientes();
+                getPedidos();
                 if (response.data.error) {
                     setStatus({
                         type: 'error',
@@ -54,9 +56,11 @@ export const VisualizarCliente = () => {
             });
     }
 
+
+
     useEffect(() => {
-        getClientes();
-    }, []);
+        getPedidos();
+    },[]);
 
     return (
         <div className="p-3">
@@ -65,20 +69,18 @@ export const VisualizarCliente = () => {
 
                 <div className="d-flex">
                     <div className="mr-auto">
-                        <h2>Lista de Clientes</h2>
-                    </div>
 
+                        <h2>Lista de Pedidos do Cliente {(ClienteId)}</h2>
+                    </div>
                 </div>
 
-                <Table striped hover >
+                <Table striped hover>
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Nome</th>
-                            <th>Endereço</th>
-                            <th>Cidade</th>
-                            <th>UF</th>
-                            <th>Nascimento</th>
+                            <th>ID Serviço</th>
+                            <th>Valor</th>
+                            <th>Prazo</th>
                             <th>Ações</th>
 
 
@@ -88,33 +90,36 @@ export const VisualizarCliente = () => {
                         {data.map(item => (
                             <tr key={item.id}>
                                 <td>{item.id}</td>
-                                <td>{item.nome}</td>
-                                <td>{item.endereco}</td>
-                                <td>{item.cidade}</td>
-                                <td>{item.uf}</td>
-                                <td>{item.nascimento}</td>
+                                <td>{item.ServicoId}</td>
+                                <td>{item.valor}</td>
+                                <td>{item.data}</td>
                                 <td className="text-center">
-                                    <Link to={"/cliente/" + item.id}
+                                    <Link to={"/pedido/" + item.id}
                                         className="btn btn-outline-info btn-sm m-1">Consultar</Link>
-                                    <Link to={"/editarcliente/" + item.id}
+                                    <Link to={"/editarpedido/" + item.id}
                                         className="btn btn-outline-warning btn-sm m-1">Editar</Link>
                                     <span className="btn btn-outline-danger btn-sm m-1"
-                                        onClick={() => apagarCliente(item.id)}>Excluir</span>
+                                        onClick={() => apagarPedido(item.id)}>Excluir</span>
                                 </td>
                             </tr>
                         ))}
 
+                        
+
+
                     </tbody>
                 </Table>
                 <div className="pt-2">
-                    <Link to="/cadastrarcliente"
-                        className="btn btn-outline-success btn-sm m-1">Adicionar Cliente
+                    <Link to="/cadastrarpedido"
+                        className="btn btn-outline-success btn-sm m-1">Novo Pedido
                     </Link>
-                    <Link to="/"
+                    <Link to="/listadeclientes"
+                        className="btn btn-outline-info btn-sm m-1">Todos Clientes
+                    </Link>
+                    <Link to={"/cliente/" + ClienteId}
                         className="btn btn-outline-primary btn-sm m-1">Voltar
                     </Link>
                 </div>
-
             </Container>
         </div>
     )

@@ -5,18 +5,20 @@ import { Link } from 'react-router-dom';
 import { Alert, Button, Container, Form, FormGroup, Input, Label, Spinner } from 'reactstrap';
 import { api, headers } from '../../../config';
 
-export const EditarServico = (props) => {
+export const EditarPedido = (props) => {
 
     const [id] = useState(props.match.params.id);
-    const [nome, setNome] = useState('');
-    const [descricao, setDescricao] = useState('');
+    const [ClienteId, setClienteId] = useState('');
+    const [ServicoId, setServicoId] = useState('');
+    const [valor, setValor] = useState('');
+    const [data, setData] = useState('');
     const [status, setStatus] = useState({
         formSave: false,
         type: '',
         message: ''
     })
 
-    const edtServico = async e => {
+    const edtPedido = async e => {
         e.preventDefault();
         console.log("Editar")
 
@@ -24,7 +26,7 @@ export const EditarServico = (props) => {
             formSave: true
         });
 
-        await axios.put(api + "/editarservico", { id, nome, descricao }, { headers })
+        await axios.put(api + "/editarpedido", { id, ClienteId, ServicoId, valor, data }, { headers })
             .then((response) => {
                 if (response.data.error) {
                     setStatus({
@@ -50,16 +52,18 @@ export const EditarServico = (props) => {
     }
 
     useEffect(() => {
-        const getServico = async () => {
-            await axios.get(api + "/servico/" + id)
+        const getPedido = async () => {
+            await axios.get(api + "/pedido/" + id)
                 .then((response) => {
-                    setNome(response.data.servico.nome);
-                    setDescricao(response.data.servico.descricao)
+                    setClienteId(response.data.pedido.ClienteId);
+                    setServicoId(response.data.pedido.ServicoId);
+                    setValor(response.data.pedido.valor);
+                    setData(response.data.pedido.data);
                 }).catch(() => {
                     console.log("Erro: Não foi possível conectar a API.")
                 });
         }
-        getServico();
+        getPedido();
     }, [id]);
 
     return (
@@ -67,8 +71,9 @@ export const EditarServico = (props) => {
             <Container>
                 <div className="d-flex">
                     <div className="mr-auto">
-                        <h2>Editar um Serviço</h2>
+                        <h2>Editar um Pedido</h2>
                     </div>
+
                 </div>
                 <hr />
                 {status.type === 'error' ? <Alert color="danger">
@@ -77,28 +82,41 @@ export const EditarServico = (props) => {
                 {status.type === 'success' ? <Alert color="success">
                     {status.message}</Alert> : ""}
 
-                <Form onSubmit={edtServico}>
+                <Form onSubmit={edtPedido}>
                     <FormGroup className="p-2">
-                        <Label>Nome</Label>
-                        <Input type="text" name="nome"
-                            placeholder="Nome do serviço" value={nome}
-                            onChange={e => setNome(e.target.value)} />
+                        <Label>Id Cliente</Label>
+                        <Input type="text" name="ClienteId"
+                            placeholder="Nome do pedido" value={ClienteId}
+                            onChange={e => setClienteId(e.target.value)} />
                     </FormGroup>
                     <FormGroup className="p-2">
-                        <Label>Descrição</Label>
-                        <Input type="text" name="descricao"
-                            placeholder="Descrição do serviço" value={descricao}
-                            onChange={e => setDescricao(e.target.value)} />
+                        <Label>Id Serviço</Label>
+                        <Input type="text" name="ServicoId"
+                            placeholder="Endereço do cliente" value={ServicoId}
+                            onChange={e => setServicoId(e.target.value)} />
                     </FormGroup>
+                    <FormGroup className="p-2">
+                        <Label>Valor</Label>
+                        <Input type="text" name="valor"
+                            placeholder="Cidade" value={valor}
+                            onChange={e => setValor(e.target.value)} />
+                    </FormGroup>
+                    <FormGroup className="p-2">
+                        <Label>Prazo</Label>
+                        <Input type="text" name="data"
+                            placeholder="Estado" value={data}
+                            onChange={e => setData(e.target.value)} />
+                    </FormGroup>
+
                     <div className="p-1 pt-3">
                         {status.formSave ?
                             <Button className="m-1" size="sm" type="submit" outline color="warning" disabled>Salvando
                                 <Spinner children="" size="sm" color="warning" /></Button> :
                             <Button className="m-1" size="sm" type="submit" outline color="warning">Atualizar</Button>
                         }
-                        <Link to={"/servico/" + id}
+                        <Link to={"/pedido/" + id}
                             className="btn btn-outline-info btn-sm m-1">Consultar</Link>
-                        <Link to={"/listadeservicos"}
+                        <Link to={"/listadepedidos"}
                             className="btn btn-outline-primary btn-sm m-1">Voltar</Link>
                     </div>
 

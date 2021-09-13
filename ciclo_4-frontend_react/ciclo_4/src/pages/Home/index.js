@@ -1,27 +1,33 @@
-import{Container} from 'reactstrap';
+import { Container } from 'reactstrap';
 
-export const Home = ()=>{
-    return(
+export const Home = () => {
+    return (
         <div className="p-3">
             <Container>
-                <div className="d-flex">
-                    <div className="mr-auto">
-                        <h2>Página inicial</h2>
+                <div>
+                    <div className="mr-auto m-1">
+                        <h2>Home</h2>
                     </div>
-                    <div>
-                        <a href="/visualizarcliente" 
-                        className="btn btn-outline-primary btn-sm m-1">Clientes</a>
+                    <hr/>
+                    <div className="d-flex">
+                        <div>
+                            <a href="/listadeclientes"
+                                className="btn btn-outline-info btn-sm m-1">Clientes</a>
+                        </div>
+                        <div>
+                            <a href="/listadeservicos"
+                                className="btn btn-outline-info btn-sm m-1">Serviços</a>
+                        </div>
+                        <div>
+                            <a href="/listadepedidos"
+                                className="btn btn-outline-info btn-sm m-1">Pedidos</a>
+                        </div>
                     </div>
-                    <div>
-                        <a href="/visualizarservico" 
-                        className="btn btn-outline-primary btn-sm m-1">Serviços</a>
-                    </div>
-                    <div>
-                        <a href="/visualizarpedido" 
-                        className="btn btn-outline-primary btn-sm m-1">Pedidos</a>
-                    </div>
+
+
+
                 </div>
-                
+
             </Container>
         </div>
     )

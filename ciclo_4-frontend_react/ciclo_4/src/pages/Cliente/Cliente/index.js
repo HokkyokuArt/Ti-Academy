@@ -30,14 +30,10 @@ export const Cliente = (props) => {
                     <div className="mr-auto">
                         <h2>Informações do Cliente</h2>
                     </div>
-                    <div className="p-2">
-                        <Link to="/visualizarcliente"
-                            className="btn btn-outline-primary btn-sm">Clientes
-                        </Link>
-                    </div>
                 </div>
-                <div>
-                    <dl className="row pt-3">
+                <hr />
+                <div className="m-1">
+                    <dl className="row pt-2">
                         <dt className="col-sm-3">Nome</dt>
                         <dd className="col-sm-9">{data.nome}</dd>
                     </dl>
@@ -57,6 +53,16 @@ export const Cliente = (props) => {
                         <dt className="col-sm-3">Nascimento</dt>
                         <dd className="col-sm-9">{data.nascimento}</dd>
                     </dl>
+                </div>
+                <hr />
+                <div className="pt-2">
+                    <Link to={"/editarcliente/" + data.id}
+                        className="btn btn-outline-warning btn-sm m-1 ">Editar</Link>
+                    <Link to={"/pedidosdocliente/" + data.id}
+                        className="btn btn-outline-info btn-sm m-1">Pedidos do Cliente</Link>
+                    <Link to="/listadeclientes"
+                        className="btn btn-outline-primary btn-sm m-1">Voltar
+                    </Link>
                 </div>
 
             </Container>

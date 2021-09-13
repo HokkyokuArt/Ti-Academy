@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useState } from "react"
 import { Link } from "react-router-dom"
-import { Alert, Button, Container, Form, FormGroup, Input, Label } from "reactstrap"
-import { api } from "../../../config";
+import { Alert, Button, Container, Form, FormGroup, Input, Label, Spinner } from "reactstrap"
+import { api, headers } from "../../../config";
 
 export const CadastrarPedido = () => {
 
@@ -16,6 +16,7 @@ export const CadastrarPedido = () => {
     });
 
     const [status, setStatus] = useState({
+        formSave: false,
         type: '',
         message: ''
 
@@ -26,21 +27,23 @@ export const CadastrarPedido = () => {
     });
 
     const cadPedido = async e => {
-        console.log(pedido)
         e.preventDefault();
-        const headers = {
-            'Content-Type': 'application/json'
-        }
+
+        setStatus({
+            formSave: true
+        });
 
         await axios.post(api + "/pedidos", pedido, { headers })
             .then((response) => {
                 if (response.data.error) {
                     setStatus({
+                        formSave: false,
                         type: 'error',
                         message: response.data.message
                     });
                 } else {
                     setStatus({
+                        formSave: false,
                         type: 'success',
                         message: response.data.message
                     });
@@ -48,6 +51,7 @@ export const CadastrarPedido = () => {
 
             }).catch(() => {
                 setStatus({
+                    formSave: false,
                     type: 'error',
                     message: "Erro: Não foi possível conectar a Api."
                 });
@@ -61,21 +65,17 @@ export const CadastrarPedido = () => {
                     <div className="mr-auto">
                         <h2>Cadastrar Novo Pedido</h2>
                     </div>
-                    <div className="p-2">
-                        <Link to="/visualizarpedido"
-                            className="btn btn-outline-primary btn-sm">Voltar
-                        </Link>
-                    </div>
+
                 </div>
-                <hr className="m-1" />
+                <hr />
 
                 {status.type === 'error' ? <Alert color="danger">
-                    {status.message}</Alert>:""}
-                    
-                {status.type === 'success' ? <Alert color="success">
-                    {status.message}</Alert>:""}
+                    {status.message}</Alert> : ""}
 
-                <Form className="p-2" onSubmit={cadPedido}>
+                {status.type === 'success' ? <Alert color="success">
+                    {status.message}</Alert> : ""}
+
+                <Form onSubmit={cadPedido}>
                     <FormGroup className="p-2">
                         <Label>Id Cliente</Label>
                         <Input type="text" name="ClienteId"
@@ -96,8 +96,18 @@ export const CadastrarPedido = () => {
                         <Input type="text" name="data"
                             placeholder="Prazo de Entrega" onChange={valorInput} />
                     </FormGroup>
-                                
-                    <Button className="m-2" type="submit" outline color="info">Cadastrar</Button>
+                    <div className="p-1 pt-3">
+                        {status.formSave ?
+                            <Button className="m-1" size="sm" type="submit" outline color="success" disabled>Salvando
+                                <Spinner children="" color="success" size="sm" /></Button> :
+                            <Button className="m-1" size="sm" type="submit" outline color="success">Cadastrar</Button>
+                        }
+                        <Button type="reset" className="m-1" size="sm" outline color="danger">Limpar</Button>
+                        <Link to="/listadepedidos"
+                            className="btn btn-outline-primary btn-sm m-1">Voltar
+                        </Link>
+
+                    </div>
 
                 </Form>
 

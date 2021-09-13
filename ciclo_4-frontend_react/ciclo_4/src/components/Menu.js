@@ -22,7 +22,13 @@ export const Menu = (props) => {
                     <Collapse isOpen={isOpen} navbar>
                         <Nav className="mr-auto" navbar>
                             <NavItem>
-                                <NavLink href="/">Home</NavLink>
+                                <NavLink href="/listadeclientes">Clientes</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="/listadeservicos">Serviços</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink href="/listadepedidos">Pedidos</NavLink>
                             </NavItem>
                         </Nav>
                     </Collapse>

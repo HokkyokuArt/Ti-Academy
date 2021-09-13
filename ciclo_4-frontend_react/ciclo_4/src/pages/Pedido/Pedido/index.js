@@ -8,7 +8,7 @@ export const Pedido = (props) => {
     console.log(props.match.params.id)
 
     const [data, setData] = useState([]);
-    const [id] = useState(props.match.params.id)
+    const [id] = useState(props.match.params.id);
 
     useEffect(() => {
         const getPedido = async () => {
@@ -30,14 +30,10 @@ export const Pedido = (props) => {
                     <div className="mr-auto">
                         <h2>Informações do Pedido</h2>
                     </div>
-                    <div className="p-2">
-                        <Link to="/visualizarpedido"
-                            className="btn btn-outline-primary btn-sm">Pedidos
-                        </Link>
-                    </div>
                 </div>
-                <div>
-                    <dl className="row pt-3">
+                <hr />
+                <div className="m-1">
+                    <dl className="row pt-2">
                         <dt className="col-sm-3">Id Cliente</dt>
                         <dd className="col-sm-9">{data.ClienteId}</dd>
                     </dl>
@@ -53,7 +49,14 @@ export const Pedido = (props) => {
                         <dt className="col-sm-3">Data</dt>
                         <dd className="col-sm-9">{data.data}</dd>
                     </dl>
-                    
+                </div>
+                <hr />
+                <div className="pt-2">
+                    <Link to={"/editarpedido/" + data.id}
+                        className="btn btn-outline-warning btn-sm m-1 ">Editar</Link>
+                    <Link to="/listadepedidos"
+                        className="btn btn-outline-primary btn-sm m-1">Voltar
+                    </Link>
                 </div>
 
             </Container>

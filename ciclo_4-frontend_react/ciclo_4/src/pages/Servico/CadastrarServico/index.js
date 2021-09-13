@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import { Alert, Button, Container, Form, FormGroup, Input, Label, Spinner } from "reactstrap"
-import { api, headers} from "../../../config";
+import { api, headers } from "../../../config";
 
 export const CadastrarServico = () => {
 
@@ -31,7 +31,7 @@ export const CadastrarServico = () => {
             formSave: true
         });
 
-        
+
 
         await axios.post(api + "/servicos", servico, { headers })
             .then((response) => {
@@ -63,16 +63,11 @@ export const CadastrarServico = () => {
             <Container>
                 <div className="d-flex">
                     <div className="mr-auto">
-                        <h2>Cadastrar Novo Seviço</h2>
+                        <h2>Cadastrar Novo Serviço</h2>
                     </div>
-                    <div className="p-2">
-                        <Link to="/visualizarservico"
-                            className="btn btn-outline-primary btn-sm">Lista
-                        </Link>
 
-                    </div>
                 </div>
-                <hr className="m-1" />
+                <hr />
 
                 {status.type === 'error' ? <Alert color="danger">
                     {status.message}</Alert> : ""}
@@ -80,7 +75,7 @@ export const CadastrarServico = () => {
                 {status.type === 'success' ? <Alert color="success">
                     {status.message}</Alert> : ""}
 
-                <Form className="p-2" onSubmit={cadServico}>
+                <Form onSubmit={cadServico}>
                     <FormGroup className="p-2">
                         <Label>Nome</Label>
                         <Input type="text" name="nome"
@@ -91,12 +86,17 @@ export const CadastrarServico = () => {
                         <Input type="text" name="descricao"
                             placeholder="Descrição do serviço" onChange={valorInput} />
                     </FormGroup>
-                    {status.formSave ?
-                        <Button className="m-2" type="submit" outline color="primary" disabled>Salvando
-                            <Spinner children="" color="primary" size="sm"/></Button> :
-                        <Button className="m-2" type="submit" outline color="primary">Cadastrar</Button>
-                    }
-                    <Button type="reset" outline color="secondary">Limpar</Button>
+                    <div className="p-1 pt-3">
+                        {status.formSave ?
+                            <Button className="m-1" type="submit" size="sm" outline color="success" disabled>Salvando
+                                <Spinner children="" color="success" size="sm" /></Button> :
+                            <Button className="m-1" type="submit" size="sm" outline color="success">Cadastrar</Button>
+                        }
+                        <Button type="reset" className="m-1" size="sm" outline color="danger">Limpar</Button>
+                        <Link to="/listadeservicos"
+                            className="btn btn-outline-primary btn-sm m-1">Voltar
+                        </Link>
+                    </div>
 
                 </Form>
 

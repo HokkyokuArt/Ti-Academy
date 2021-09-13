@@ -1,10 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-
 const models = require('./models');
-/* const { setTimeout } = require('timers'); */
-
-
 
 const app = express();
 app.use(cors());
@@ -21,15 +17,32 @@ app.get('/', function (req, res) {
 
 //criar novo cliente
 app.post('/clientes', async (req, res) => {
-    let crate = await cliente.create(
+    await aguardar(1000);
+
+    function aguardar(ms){
+        return new Promise((resolve)=>{
+            setTimeout(resolve, ms);
+        });
+    }
+    await cliente.create(
         req.body
-    );
-    res.send('Novo Cliente foi inserido');
+    ).then(() => {
+        return res.json({
+            type: "success",
+            message: "Cliente criado com sucesso."
+        });
+    }).catch((erro) => {
+        return res.status(400).json({
+            type: "error",
+            message: "Erro na criação de cliente."
+        });
+    });
+    
 });
 
 //adicionar um novo serviço
 app.post('/servicos', async (req, res) => {
-    await aguardar(3000);
+    await aguardar(1000);
 
     function aguardar(ms){
         return new Promise((resolve)=>{
@@ -42,7 +55,7 @@ app.post('/servicos', async (req, res) => {
     ).then(() => {
         return res.json({
             type: "success",
-            message: "Serviço foi criado com sucesso."
+            message: "Serviço criado com sucesso."
         });
     }).catch((erro) => {
         return res.status(400).json({
@@ -54,10 +67,27 @@ app.post('/servicos', async (req, res) => {
 
 //adicionar um novo pedido
 app.post('/pedidos', async (req, res) => {
-    let create = await pedido.create(
+    await aguardar(1000);
+
+    function aguardar(ms){
+        return new Promise((resolve)=>{
+            setTimeout(resolve, ms);
+        });
+    }
+
+    await pedido.create(
         req.body
-    );
-    res.send('Pedido adicionado!');
+    ).then(() => {
+        return res.json({
+            type: "success",
+            message: "Pedido criado com sucesso."
+        });
+    }).catch((erro) => {
+        return res.status(400).json({
+            type: "error",
+            message: "Erro na criação de serviço."
+        });
+    });
 });
 
 //mostrar todos os serviços
@@ -133,7 +163,7 @@ app.get('/pedido/:id', async (req, res) => {
 //put = 
 
 //1 visualize todos os clientes
-app.get('/listacliente', async (req, res) => {
+app.get('/listaclientes', async (req, res) => {
     await cliente.findAll({
         order: [['nome', 'ASC']]
     }).then(function (clientes) {
@@ -243,7 +273,7 @@ app.put('/editarpedido', (req, res) => {
     }).then(function () {
         return res.json({
             error: false,
-            message: "Pedido modificado com sucesso."
+            message: "Pedido foi alterado com sucesso."
         });
     }).catch(function (erro) {
         return res.status(400).json({
@@ -344,9 +374,9 @@ app.put('/editarpedidoservico', (req, res) => {
 }); */
 
 //excluir um cliente pelo nome
-app.delete('/apagarcliente/:nome', (req, res) => {
+app.delete('/apagarcliente/:id', (req, res) => {
     cliente.destroy({
-        where: { nome: req.params.nome }
+        where: { id: req.params.id}
     }).then(function () {
         return res.json({
             error: false,
@@ -371,10 +401,27 @@ app.delete('/apagarservico/:id', (req, res) => {
     }).catch(function (erro) {
         return res.status(400).json({
             error: true,
-            message: "Não foi possível excluir o Serviço."
+            message: "Não foi possível excluir o serviço."
         });
     });
 });
+
+app.delete('/apagarpedido/:id', (req, res) => {
+    pedido.destroy({
+        where: { id: req.params.id}
+    }).then(function () {
+        return res.json({
+            error: false,
+            message: "Pedido foi excluído com sucesso."
+        });
+    }).catch(function (erro) {
+        return res.status(400).json({
+            error: true,
+            message: "Não foi possível excluir o pedido."
+        });
+    });
+});
+
 
 
 /////////////////////////////////////////////////////////////////////////
@@ -422,7 +469,7 @@ permita alterar esse pedido
 utilizando o clienteId. */
 
 //listar todos os pedidos de um cliente
-app.get('/pedidoscliente/:id', async(req,res)=>{
+app.get('/pedidosdocliente/:id', async(req,res)=>{
     await pedido.findAll({where: {ClienteId: [req.params.id]}})
     .then(function(pedidos){
         return res.json({pedidos})
